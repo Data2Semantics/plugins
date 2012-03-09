@@ -6,6 +6,7 @@ from pprint import pprint
 import httplib, urllib, json
 from util.util import not_turtle_response, multiple_patients_response
 import itertools
+from collections import Counter
 
 def retrieve(request, graph):
     
@@ -35,31 +36,66 @@ def retrieve(request, graph):
         # We now know the patient has Febrile Neutropenia
         cg.add((patient,PO['hasIndication'],UMLS['C0746883']))
         
-    sparql = SPARQLWrapper("http://linkedlifedata.com/sparql")
-    sparql.setReturnFormat(JSON)
+    aers_sparql = SPARQLWrapper("http://eculture2.cs.vu.nl:5020/sparql/")
+    aers_sparql.setReturnFormat(JSON)
+
+    lld_sparql = SPARQLWrapper("http://linkedlifedata.com/sparql")
+    lld_sparql.setReturnFormat(JSON)
     
-    ranking = {}
+    ranking = Counter()
     
     # Chain generators for all values for the attributes of the patient
-    features = itertools.chain(cg.objects(subject=patient, predicate=PO['hasIndication']), cg.objects(subject=patient, predicate=PO['hasMeasurement']), cg.objects(subject=patient, predicate=PO['usesMedication']))
-    
+    features = itertools.chain(cg.objects(subject=patient, predicate=PO['hasIndication']), \
+        cg.objects(subject=patient, predicate=PO['hasMeasurement']), \
+        cg.objects(subject=patient, predicate=PO['usesMedication']), \
+        cg.objects(subject=patient, predicate=PO['hadPreviousIndication']), \
+        cg.objects(subject=patient, predicate=PO['hadRecentTreatment']))
+        
+    exp_features = set()
+    q_part = ""
+
+    # First get all sameAs uris for the values
     for f in features :
+        if str(f).startswith('http://linkedlifedata.com'): 
+            exp_features.add(str(f))
+        
+        q_part += "{?altname owl:sameAs <"+f+"> .} UNION { <"+f+"> owl:sameAs ?altname .} UNION \n"
+
+    q_part = q_part[:-8]
+    
+    q = """
+        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+        PREFIX owl: <http://www.w3.org/2002/07/owl#>
+        SELECT ?altname
+        WHERE { """ + q_part + """ }
+    """
+
+    aers_sparql.setQuery(q)
+    
+    results = aers_sparql.query().convert()
+
+    # Only query LLD for stuff that LLD knows about (saves quite some time)
+    for result in results["results"]["bindings"]:
+        if result["altname"]["value"].startswith('http://linkedlifedata.com') :
+            exp_features.add(result["altname"]["value"])
+        
+    # Then lookup the publications that mention these, and add them to a tally (Counter)
+    for ef in exp_features :
         q = """
             PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
             PREFIX lifeskim: <http://linkedlifedata.com/resource/lifeskim/>
             SELECT ?pubmed
-            WHERE { ?pubmed lifeskim:mentions <"""+f+"""> . }
-            LIMIT 100
+            WHERE { ?pubmed lifeskim:mentions <"""+ef+"""> . }
+            LIMIT 250
         """
-        sparql.setQuery(q)
+        lld_sparql.setQuery(q)
         
-        results = sparql.query().convert()
+        results = lld_sparql.query().convert()
 
         for result in results["results"]["bindings"]:
-            ranking.setdefault(result["pubmed"]["value"],0)
             ranking[result["pubmed"]["value"]] += 1
     
-        
-    ranking_json = json.dumps(ranking)
+    # Return only the 20 most frequent publications
+    ranking_json = json.dumps(ranking.most_common(50))
     # print ranking_json
     return HttpResponse(ranking_json, mimetype='application/json')
