@@ -6,7 +6,9 @@ from django.conf.urls.defaults import patterns, include, url
 
 urlpatterns = patterns('',
     # Examples:
-    url(r'^mascc/(?P<graph>(.|\n)+)$', 'mascc_plugin.views.parse'),
+    url(r'^mascc/(?P<graph>(.|\n)+)$', 'mascc.views.parse'),
+    url(r'^test/(?P<ttype>(.*?))/(?P<test>(.*))$', 'views.test'),
+    url(r'^publications/(?P<graph>(.|\n)+)$', 'publications.views.retrieve'),
     # url(r'^$', 'mascc_plugin.views.home', name='home'),
     # url(r'^mascc_plugin/', include('mascc_plugin.foo.urls')),
 

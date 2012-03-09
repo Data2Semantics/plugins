@@ -6,12 +6,15 @@ Created on Mar 6, 2012
 from rdflib import ConjunctiveGraph, Namespace, RDF, RDFS, Literal, URIRef, XSD
 from django.http import HttpResponse
 from logging import getLogger, DEBUG, FileHandler, Formatter
-
-rules = []
+from SPARQLWrapper import SPARQLWrapper, JSON
+from pprint import pprint
+import httplib, urllib, json
+from util.util import not_turtle_response, multiple_patients_response
 
 
 def parse(request, graph):
-#    print request.raw_post_data
+    
+    
     l = getLogger('MASCC')
     fh = FileHandler('mascc.log')
     fh.setLevel(DEBUG)
@@ -20,7 +23,11 @@ def parse(request, graph):
     l.addHandler(fh)
     l.info('Baaa')
     
-    cg = ConjunctiveGraph().parse(data=graph, format='n3')
+    try :
+        cg = ConjunctiveGraph().parse(data=graph, format='n3')
+    except :   
+        return not_turtle_response(graph)
+    
     DRUG = Namespace('http://aers.data2semantics.org/resource/drug/')
     PO = Namespace('http://www.data2semantics.org/ontology/patient/')
     UMLS = Namespace('http://linkedlifedata.com/resource/umls/id/')
@@ -33,16 +40,19 @@ def parse(request, graph):
         patient = cg.value(predicate=RDF.type, object=PO['Patient'], any=False)
     except:
         # More than one patient
-        return HttpResponse('More than one patient!')
-
+        return multiple_patients_response(cg.serialize(format='turtle'))
     
     # If the patient does not have fever, nor neutropenia, return null
     if not (cg.value(predicate=PO['hasIndication'],object=UMLS['C0027947']) and cg.value(predicate=PO['hasMeasurement'],object=UMLS['C0015967'])) :
-        return HttpResponse('null')
+        bad_request = HttpResponse('<h1>Bad Request</h1><p>Patient does not have fever or neutropenia</p>')
+        bad_request.status_code = 400   
+        return bad_request
+    else :
+        # We now know the patient has Febrile Neutropenia
+        cg.add((patient,PO['hasIndication'],UMLS['C0746883']))
     
-    
+    # Initialise the score to zero
     score = 0
-
     
     if cg.value(predicate=PO['burdernOfIllness'],object=PO['MildSymptoms']) or cg.value(predicate=PO['burdernOfIllness'],object=PO['NoSymptoms']) :
         # Burden of illness: no or mild symptoms
@@ -94,5 +104,7 @@ def parse(request, graph):
         
     cg.add((patient, PO['masccIndex'], Literal(score, datatype=XSD['int'])))
         
-    return HttpResponse(cg.serialize(format='turtle'))
+    return HttpResponse(cg.serialize(format='turtle'), mimetype='text/turtle')
+
+
     

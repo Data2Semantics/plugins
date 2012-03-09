@@ -150,7 +150,7 @@ no_neutropenia = """@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
 
 conn = httplib.HTTPConnection("localhost:8000")
-conn.request("GET", "/mascc/"+urllib.quote(no_neutropenia,safe=''))
+conn.request("GET", "/mascc/"+urllib.quote(patient1,safe=''))
 r1 = conn.getresponse()
 
 data = r1.read()
