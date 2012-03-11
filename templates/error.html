@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}Error{% endblock %}
+
+{% block content %}
+<style>
+	{{ pygcss }}
+</style>
+<div class="hero-unit">
+  <h1>Error</h1>
+  <p>{{message}}</a></p>
+</div>
+<div class="row">
+	<div class="span12">
+		<p>This is what you sent me:</p>
+		{{ code|safe }}
+	</div>
+</div>
+
+{% endblock %}

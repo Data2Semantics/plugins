@@ -9,7 +9,7 @@ from logging import getLogger, DEBUG, FileHandler, Formatter
 from SPARQLWrapper import SPARQLWrapper, JSON
 from pprint import pprint
 import httplib, urllib, json
-from util.util import not_turtle_response, multiple_patients_response
+from util.util import not_turtle_response, multiple_patients_response, not_febrile_neutropenia_response
 
 
 def parse(request, graph):
@@ -29,12 +29,15 @@ def parse(request, graph):
         return not_turtle_response(graph)
     
     DRUG = Namespace('http://aers.data2semantics.org/resource/drug/')
+    IND = Namespace('http://aers.data2semantics.org/resource/indication/')
     PO = Namespace('http://www.data2semantics.org/ontology/patient/')
     UMLS = Namespace('http://linkedlifedata.com/resource/umls/id/')
+    
     
     cg.bind('drug',DRUG)
     cg.bind('po',PO)
     cg.bind('umls',UMLS)
+    cg.bind('indication',IND)
     
     try :
         patient = cg.value(predicate=RDF.type, object=PO['Patient'], any=False)
@@ -44,9 +47,7 @@ def parse(request, graph):
     
     # If the patient does not have fever, nor neutropenia, return null
     if not (cg.value(predicate=PO['hasIndication'],object=UMLS['C0027947']) and cg.value(predicate=PO['hasMeasurement'],object=UMLS['C0015967'])) :
-        bad_request = HttpResponse('<h1>Bad Request</h1><p>Patient does not have fever or neutropenia</p>')
-        bad_request.status_code = 400   
-        return bad_request
+        return not_febrile_neutropenia_response(cg.serialize(format='turtle'))
     else :
         # We now know the patient has Febrile Neutropenia
         cg.add((patient,PO['hasIndication'],UMLS['C0746883']))
@@ -104,7 +105,9 @@ def parse(request, graph):
         
     cg.add((patient, PO['masccIndex'], Literal(score, datatype=XSD['int'])))
         
-    return HttpResponse(cg.serialize(format='turtle'), mimetype='text/turtle')
-
+    response =  HttpResponse(cg.serialize(format='turtle'), content_type='text/turtle')
+    response['Content-Disposition'] = 'attachment; filename=patient.ttl'
+    
+    return response
 
     
