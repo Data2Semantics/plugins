@@ -7,21 +7,12 @@ from rdflib import ConjunctiveGraph, Namespace, RDF, RDFS, Literal, URIRef, XSD
 from django.http import HttpResponse
 from logging import getLogger, DEBUG, FileHandler, Formatter
 from SPARQLWrapper import SPARQLWrapper, JSON
-from pprint import pprint
 import httplib, urllib, json
 from util.util import not_turtle_response, multiple_patients_response, not_febrile_neutropenia_response
 
 
 def parse(request, graph):
     
-    
-    l = getLogger('MASCC')
-    fh = FileHandler('mascc.log')
-    fh.setLevel(DEBUG)
-    formatter = Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
-    fh.setFormatter(formatter)
-    l.addHandler(fh)
-    l.info('Baaa')
     
     try :
         cg = ConjunctiveGraph().parse(data=graph, format='n3')
@@ -54,36 +45,38 @@ def parse(request, graph):
     
     # Initialise the score to zero
     score = 0
+
+    trace = ""
     
     if cg.value(predicate=PO['burdernOfIllness'],object=PO['MildSymptoms']) or cg.value(predicate=PO['burdernOfIllness'],object=PO['NoSymptoms']) :
         # Burden of illness: no or mild symptoms
-        l.debug("No or mild symptoms\n")
+        trace = trace + "No or mild symptoms\n"
         score += 5
     if not cg.value(predicate=PO['hasIndication'],object=UMLS['C0020649']) :
         # No hypotension
-        l.debug("No hypotension\n")
+        trace = trace + "No hypotension\n"
         score += 5
     if not cg.value(predicate=PO['hasIndication'],object=UMLS['C0024117']) :
         # No COPD
-        l.debug("No COPD\n")
+        trace = trace + "No COPD\n"
         score += 4
     if cg.value(predicate=PO['hasIndication'],object=UMLS['C0280100']) or not cg.value(predicate=PO['hadPreviousIndication'],object=UMLS['C0026946']) :
         # Adult: C0280099
         # Child: C0279068
         # Solid tumor or no previous fungal infection (Mycoses)
-        l.debug("Solid tumor or no previous fungal infection\n")
+        trace = trace + "Solid tumor or no previous fungal infection\n"
         score += 4
     if not cg.value(predicate=PO['hasIndication'],object=UMLS['C0011175']) :
         # No dehydration
-        l.debug("No dehydration\n")
+        trace = trace + "No dehydration\n"
         score += 3
     if cg.value(predicate=PO['burdernOfIllness'],object=PO['ModerateSymptoms']) :
         # Burden of illness: no or mild symptoms
-        l.debug("Moderate symptoms\n")
+        trace = trace + "Moderate symptoms\n"
         score += 3
     if cg.value(predicate=PO['hasStatus'],object=PO['outpatient']) :
         # Burden of illness: no or mild symptoms
-        l.debug("Outpatient\n")
+        trace = trace + "Outpatient\n"
         score += 3
         
     patient = cg.value(predicate=RDF.type, object=PO['Patient'])
@@ -91,13 +84,15 @@ def parse(request, graph):
     
     if age.toPython < 20 :
         # Age is under 20
-        l.debug("Age is under 20\n")
+        trace = trace + "Age is under 20\n"
         score += 2 
 
-    l.debug("Age: {} \n".format(age))
+    trace = trace + "Age: {} \n".format(age)
         
-    l.debug("Score: {}".format(score))
+    trace = trace + "Score: {}".format(score)
         
+    cg.add((patient, RDFS.comment, Literal(trace, datatype=XSD['string'])))
+
     if score > 21 :
         cg.add((patient, PO['complicationRisk'], PO['lowRisk']))
     else :
