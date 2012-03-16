@@ -59,7 +59,10 @@
 		<td><em>Scores &gt;21 are at low risk of complications</em></td>
 		<td></td>
 		</tr>
-		</table><h2>What it does</h2>
+		</table>
+		
+		<div class="well">
+		<h2>What it does</h2>
 
 		<p>This plugin takes a <a href="http://www.w3.org/TR/turtle/">Turtle</a> representation of a patient (expressed using the D2S <a href="https://github.com/Data2Semantics/raw2ld/blob/master/vocab/patient_vocab.owl">Patient Ontology</a>), and interprets the values for the <code>po:hasIndication</code>, <code>po:hadPreviousIndication</code>, <code>po:burdenOfIllness</code> and <code>po:patientStatus</code> properties to determine the <strong>MASCC</strong> index for that patient. </p>
 
@@ -70,23 +73,36 @@
 		<li>Only works for patients that are both Febrile and have Neutropenia</li>
 		<li>Only works if these diagnoses are expressed using UMLS codes from the <a href="http://linkedlifedata.com">Linked Life Data</a> repository.</li>
 		</ul>
+		</div>
+		
+		<a class="btn" data-toggle="modal" href="#masccUsageModal">Usage</a>
+		
+		<div class="modal" id="masccUsageModal">
+			<div class="modal-header">
+			    <a class="close" data-dismiss="modal">×</a>
+			    <h3>Usage</h3>
+			  </div>
+			<div class="modal-body">
+				<ul>
+				<li>Create a patient record according to the <a href="https://github.com/Data2Semantics/raw2ld/blob/master/vocab/patient_vocab.owl">Patient Ontology</a> vocabulary, using the UMLS identifiers specified by <a href="http://linkedlifedata.com">Linked Life Data</a>. A couple of tips:
 
-		<h2>Usage</h2>
+				<ul>
+				<li>Make sure there is only one instance of <code>po:Patient</code> in the turtle serialization</li>
+				<li>Make sure the patient has at least the value <code>umls:C0027947</code> (Neutropenia) for a <code>po:hasIndication</code> property.<br>
+				</li>
+				<li>Make sure the patient has at least the value <code>umls:C0015967</code> (Fever) for a <code>po:hasMeasurement</code> property. </li>
+				</ul>
+				</li>
+				<li>Append a URL encoded Turtle serialisation of your patient record to the <a href="http://YOURHOSTHERE/mascc/">http://YOURHOSTHERE/mascc/</a> URL.</li>
+				<li>Perform an HTTP GET to that URL (i.e. copy paste it to your browser's address bar)</li>
+				<li>The service will return an enriched version of the patient record</li>
+				</ul>
+			</div>
+		</div>
 
-		<ul>
-		<li>Create a patient record according to the <a href="https://github.com/Data2Semantics/raw2ld/blob/master/vocab/patient_vocab.owl">Patient Ontology</a> vocabulary, using the UMLS identifiers specified by <a href="http://linkedlifedata.com">Linked Life Data</a>. A couple of tips:
 
-		<ul>
-		<li>Make sure there is only one instance of <code>po:Patient</code> in the turtle serialization</li>
-		<li>Make sure the patient has at least the value <code>umls:C0027947</code> (Neutropenia) for a <code>po:hasIndication</code> property.<br>
-		</li>
-		<li>Make sure the patient has at least the value <code>umls:C0015967</code> (Fever) for a <code>po:hasMeasurement</code> property. </li>
-		</ul>
-		</li>
-		<li>Append a URL encoded Turtle serialisation of your patient record to the <a href="http://YOURHOSTHERE/mascc/">http://YOURHOSTHERE/mascc/</a> URL.</li>
-		<li>Perform an HTTP GET to that URL (i.e. copy paste it to your browser's address bar)</li>
-		<li>The service will return an enriched version of the patient record</li>
-		</ul>
+
+
 		
 		<h2>Example</h2>
 
