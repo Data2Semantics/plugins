@@ -13,7 +13,9 @@
 <div class="row">
 	<div class="span6">
 		<h1>MASCC Index plugin</h1>
-
+		<a class="btn btn-primary btn-large" data-toggle="modal" href="#masccUsageModal">Usage</a>
+		<a class="btn btn-info btn-large" data-toggle="modal" href="#masccExampleModal">Example</a>
+		
 		<p>The <strong>MASCC</strong> index of the <a href="http://www.mascc.org">Multinational Association for Supportive Care in Cancer</a> gives an estimation whether a patient is a <code>po:highRisk</code> patient or not, in the case of <a href="http://aers.data2semantics.org/resource/indication/FEBRILE_NEUTROPENIA">Febrile Neutropenia</a>. We take the MASCC score as defined in "<a href="http://dx.doi.org/doi:10.1093/annonc/mdp163">Management of febrile neutropenia: ESMO Clinical Recommendations</a>".</p>
 
 
@@ -31,55 +33,7 @@
 		<li>Only works if these diagnoses are expressed using UMLS codes from the <a href="http://linkedlifedata.com">Linked Life Data</a> repository.</li>
 		</ul>
 		</div>
-		
-		<p><strong>Table</strong>: <em>MASCC Scoring Index</em></p>
 
-		<table class="table table-striped">
-		<tr>
-		<td>Characteristic</td>
-		<td>Score</td>
-		</tr>
-		<tr>
-		<td>Burden of illness: no or mild symptoms</td>
-		<td>5</td>
-		</tr>
-		<tr>
-		<td>No hypotension</td>
-		<td>5</td>
-		</tr>
-		<tr>
-		<td>No chronic obstructive pulmonary disease</td>
-		<td>4</td>
-		</tr>
-		<tr>
-		<td>Solid tumor or no previous fungal infection</td>
-		<td>4</td>
-		</tr>
-		<tr>
-		<td>No dehydration</td>
-		<td>3</td>
-		</tr>
-		<tr>
-		<td>Burden of illness: moderate symptoms</td>
-		<td>3</td>
-		</tr>
-		<tr>
-		<td>Outpatient status (at onset of fever)</td>
-		<td>3</td>
-		</tr>
-		<tr>
-		<td>Age &lt;20 years</td>
-		<td>2</td>
-		</tr>
-		<tr>
-		<td><em>Scores &gt;21 are at low risk of complications</em></td>
-		<td></td>
-		</tr>
-		</table>
-		
-		<a class="btn btn-primary btn-large" data-toggle="modal" href="#masccUsageModal">Usage</a>
-		<a class="btn btn-primary btn-large" data-toggle="modal" href="#masccExampleModal">Example</a>
-		
 		<div class="modal hide fade" id="masccUsageModal">
 			<div class="modal-header">
 			    <a class="close" data-dismiss="modal">×</a>
@@ -215,12 +169,6 @@
 				<a href="#" class="btn" data-dismiss="modal" >Close</a>
 			</div>
 		</div>
-
-
-
-		
-		<h2>Example</h2>
-
 		
 		<div class="alert info">
 		<p>You can test whether the plugin works at these test URLs:</p>
@@ -236,6 +184,57 @@
 		</ul>
 		</div>
 	</div>
+	<div class="span6">
+		
+		<p><strong>Table</strong>: <em>MASCC Scoring Index</em></p>
+
+		<table class="table table-striped">
+		<tr>
+		<td>Characteristic</td>
+		<td>Score</td>
+		</tr>
+		<tr>
+		<td>Burden of illness: no or mild symptoms</td>
+		<td>5</td>
+		</tr>
+		<tr>
+		<td>No hypotension</td>
+		<td>5</td>
+		</tr>
+		<tr>
+		<td>No chronic obstructive pulmonary disease</td>
+		<td>4</td>
+		</tr>
+		<tr>
+		<td>Solid tumor or no previous fungal infection</td>
+		<td>4</td>
+		</tr>
+		<tr>
+		<td>No dehydration</td>
+		<td>3</td>
+		</tr>
+		<tr>
+		<td>Burden of illness: moderate symptoms</td>
+		<td>3</td>
+		</tr>
+		<tr>
+		<td>Outpatient status (at onset of fever)</td>
+		<td>3</td>
+		</tr>
+		<tr>
+		<td>Age &lt;20 years</td>
+		<td>2</td>
+		</tr>
+		<tr>
+		<td><em>Scores &gt;21 are at low risk of complications</em></td>
+		<td></td>
+		</tr>
+		</table>
+		
+		
+	</div>
+</div>
+<div class="row">
 	<div class="span6">
 		<h1>Publications plugin</h1>
 
