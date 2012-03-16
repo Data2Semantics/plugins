@@ -70,40 +70,40 @@
 				<p>This is a patient called "John Doe". The patient has a number of "indications" (diagnoses), most notably <code>umls:C0027947</code> (Neutropenia), and a measurement <code>umls:C0015967</code> (Fever):</p>
 
 		<pre><code>@prefix drug: &lt;http://aers.data2semantics.org/resource/drug/&gt; .
-		@prefix indication: &lt;http://aers.data2semantics.org/resource/indication/&gt; .
-		@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
-		@prefix po: &lt;http://www.data2semantics.org/ontology/patient/&gt; .
-		@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
-		@prefix umls: &lt;http://linkedlifedata.com/resource/umls/id/&gt; .
-		@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@prefix indication: &lt;http://aers.data2semantics.org/resource/indication/&gt; .
+@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix po: &lt;http://www.data2semantics.org/ontology/patient/&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix umls: &lt;http://linkedlifedata.com/resource/umls/id/&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
 
-		&lt;http://www.data2semantics.org/patient-example.owl/john_doe&gt; a po:Patient,
-		        owl:NamedIndividual;
-		    rdfs:label "john_doe"@en;
-		    po:burdenOfIllness po:Severe;
-		    po:complicationRisk po:highRisk;
-		    po:hadPreviousIndication umls:C0026946;
-		    po:hadRecentTreatment umls:C0559692;
-		    po:hasAge 67;
-		    po:hasIndication indication:DIARRHOEA,
-		        indication:VOMITING,
-		        umls:C0024117,
-		        umls:C0027947,
-		        umls:C0280100,
-		        umls:C0376545,
-		        umls:C0746883,
-		        indication:CLOSTRIDIUM_COLITIS,
-		        indication:LEUKAEMIA_RECURRENT;
-		    po:hasMeasurement umls:C0015967,
-		        umls:C0277884;
-		    po:hasStatus po:outpatient;
-		    po:masccIndex "15"^^xsd:int;
-		    po:usesMedication drug:AMBISOME,
-		        drug:CEFPROZIL,
-		        drug:CETIRIZINE_HYDROCHLORIDE,
-		        drug:FORADIL,
-		        drug:MERCAPTOPURINE;
-		    rdfs:comment "over 60, matches all other criteria" .
+&lt;http://www.data2semantics.org/patient-example.owl/john_doe&gt; a po:Patient,
+        owl:NamedIndividual;
+    rdfs:label "john_doe"@en;
+    po:burdenOfIllness po:Severe;
+    po:complicationRisk po:highRisk;
+    po:hadPreviousIndication umls:C0026946;
+    po:hadRecentTreatment umls:C0559692;
+    po:hasAge 67;
+    po:hasIndication indication:DIARRHOEA,
+        indication:VOMITING,
+        umls:C0024117,
+        umls:C0027947,
+        umls:C0280100,
+        umls:C0376545,
+        umls:C0746883,
+        indication:CLOSTRIDIUM_COLITIS,
+        indication:LEUKAEMIA_RECURRENT;
+    po:hasMeasurement umls:C0015967,
+        umls:C0277884;
+    po:hasStatus po:outpatient;
+    po:masccIndex "15"^^xsd:int;
+    po:usesMedication drug:AMBISOME,
+        drug:CEFPROZIL,
+        drug:CETIRIZINE_HYDROCHLORIDE,
+        drug:FORADIL,
+        drug:MERCAPTOPURINE;
+    rdfs:comment "over 60, matches all other criteria" .
 		</code></pre>
 
 				<p>Using the demo MASCC service at <a href="http://semweb.cs.vu.nl/plugins/mascc">http://semweb.cs.vu.nl/plugins/mascc</a>, we can now compute the MASCC score for John Doe, by following <a href="http://semweb.cs.vu.nl/plugins/mascc/%40prefix%20ns1%3A%20%3Chttp%3A%2F%2Fwww.data2semantics.org%2Fontology%2Fpatient%2F%3E%20.%0A%40prefix%20owl%3A%20%3Chttp%3A%2F%2Fwww.w3.org%2F2002%2F07%2Fowl%23%3E%20.%0A%40prefix%20rdfs%3A%20%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%20.%0A%40prefix%20xsd%3A%20%3Chttp%3A%2F%2Fwww.w3.org%2F2001%2FXMLSchema%23%3E%20.%0A%0A%3Chttp%3A%2F%2Fwww.data2semantics.org%2Fpatient-example.owl%2Fjohn_doe%3E%20a%20ns1%3APatient%2C%0A%20%20%20%20%20%20%20%20owl%3ANamedIndividual%3B%0A%20%20%20%20rdfs%3Alabel%20%22john_doe%22%40en%3B%0A%20%20%20%20ns1%3AburdenOfIllness%20ns1%3ASevere%3B%0A%20%20%20%20ns1%3AhadPreviousIndication%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0026946%3E%3B%0A%20%20%20%20ns1%3AhadRecentTreatment%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fid%2Fumls%2FC0559692%3E%3B%0A%20%20%20%20ns1%3AhasAge%2067%3B%0A%20%20%20%20ns1%3AhasIndication%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Findication%2FDIARRHOEA%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Findication%2FVOMITING%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0024117%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0027947%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0280100%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0376545%3E%3B%0A%20%20%20%20ns1%3AhasMeasurement%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0015967%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0277884%3E%3B%0A%20%20%20%20ns1%3AhasStatus%20ns1%3Aoutpatient%3B%0A%20%20%20%20ns1%3AusesMedication%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Fdrug%2FAMBISOME%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Fdrug%2FCEFPROZIL%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Fdrug%2FCETIRIZINE_HYDROCHLORIDE%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Fdrug%2FFORADIL%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Fdrug%2FMERCAPTOPURINE%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Findication%2FCLOSTRIDIUM_COLITIS%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Findication%2FLEUKAEMIA_RECURRENT%3E%3B%0A%20%20%20%20rdfs%3Acomment%20%22over%2060%2C%20matches%20all%20other%20criteria%22%20.%0A%0A">this link</a> (view the source of this page to see the actual URL… it's ugly!)</p>
@@ -112,46 +112,46 @@
 
 				<pre>
 		<code>@prefix drug: &lt;http://aers.data2semantics.org/resource/drug/&gt; .
-		@prefix indication: &lt;http://aers.data2semantics.org/resource/indication/&gt; .
-		@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
-		@prefix po: &lt;http://www.data2semantics.org/ontology/patient/&gt; .
-		@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
-		@prefix umls: &lt;http://linkedlifedata.com/resource/umls/id/&gt; .
-		@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
+@prefix indication: &lt;http://aers.data2semantics.org/resource/indication/&gt; .
+@prefix owl: &lt;http://www.w3.org/2002/07/owl#&gt; .
+@prefix po: &lt;http://www.data2semantics.org/ontology/patient/&gt; .
+@prefix rdfs: &lt;http://www.w3.org/2000/01/rdf-schema#&gt; .
+@prefix umls: &lt;http://linkedlifedata.com/resource/umls/id/&gt; .
+@prefix xsd: &lt;http://www.w3.org/2001/XMLSchema#&gt; .
 
-		&lt;http://www.data2semantics.org/patient-example.owl/john_doe&gt; a po:Patient,
-		        owl:NamedIndividual;
-		    rdfs:label "john_doe"@en;
-		    po:burdenOfIllness po:Severe;
-		    po:complicationRisk po:highRisk;
-		    po:hadPreviousIndication umls:C0026946;
-		    po:hadRecentTreatment &lt;http://linkedlifedata.com/resource/id/umls/C0559692&gt;;
-		    po:hasAge 67;
-		    po:hasIndication indication:DIARRHOEA,
-		        indication:VOMITING,
-		        umls:C0024117,
-		        umls:C0027947,
-		        umls:C0280100,
-		        umls:C0376545,
-		        umls:C0746883;
-		    po:hasMeasurement umls:C0015967,
-		        umls:C0277884;
-		    po:hasStatus po:outpatient;
-		    po:masccIndex "15"^^xsd:int;
-		    po:usesMedication drug:AMBISOME,
-		        drug:CEFPROZIL,
-		        drug:CETIRIZINE_HYDROCHLORIDE,
-		        drug:FORADIL,
-		        drug:MERCAPTOPURINE,
-		        indication:CLOSTRIDIUM_COLITIS,
-		        indication:LEUKAEMIA_RECURRENT;
-		    rdfs:comment """No hypotension
-		Solid tumor or no previous fungal infection
-		No dehydration
-		Outpatient
-		Age: 67 
-		Score: 15"""^^xsd:string,
-		        "over 60, matches all other criteria" .
+&lt;http://www.data2semantics.org/patient-example.owl/john_doe&gt; a po:Patient,
+        owl:NamedIndividual;
+    rdfs:label "john_doe"@en;
+    po:burdenOfIllness po:Severe;
+    po:complicationRisk po:highRisk;
+    po:hadPreviousIndication umls:C0026946;
+    po:hadRecentTreatment &lt;http://linkedlifedata.com/resource/id/umls/C0559692&gt;;
+    po:hasAge 67;
+    po:hasIndication indication:DIARRHOEA,
+        indication:VOMITING,
+        umls:C0024117,
+        umls:C0027947,
+        umls:C0280100,
+        umls:C0376545,
+        umls:C0746883;
+    po:hasMeasurement umls:C0015967,
+        umls:C0277884;
+    po:hasStatus po:outpatient;
+    po:masccIndex "15"^^xsd:int;
+    po:usesMedication drug:AMBISOME,
+        drug:CEFPROZIL,
+        drug:CETIRIZINE_HYDROCHLORIDE,
+        drug:FORADIL,
+        drug:MERCAPTOPURINE,
+        indication:CLOSTRIDIUM_COLITIS,
+        indication:LEUKAEMIA_RECURRENT;
+    rdfs:comment """No hypotension
+Solid tumor or no previous fungal infection
+No dehydration
+Outpatient
+Age: 67 
+Score: 15"""^^xsd:string,
+        "over 60, matches all other criteria" .
 		</code></pre>
 
 				<p>What has changed? </p>
@@ -172,7 +172,7 @@
 		</div>
 		
 		<div class="alert info">
-		<p>You can test whether the plugin works at these test URLs:</p>
+		<p>Simple examples:</p>
 
 		<ul>
 		<li>
@@ -248,12 +248,48 @@
 		<ul>
 		<li>Only works for Turtle serializations containing a <em>single</em> patient</li>
 		</ul>
-		<h2>Usage</h2>
+		
+		
+		<div class="well">
+			<h2>What it does</h2>
 
-		<p>See the MASCC Index plugin for a description &amp; example of how to use this plugin. Simply replace <code>mascc</code> in all URIs with <code>plugins</code>. </p>
-		<h2>Testing</h2>
+			<p>This plugin takes a <a href="http://www.w3.org/TR/turtle/">Turtle</a> representation of a patient (expressed using the D2S <a href="https://github.com/Data2Semantics/raw2ld/blob/master/vocab/patient_vocab.owl">Patient Ontology</a>), and uses the values for its properties to find related publications as listed in the LLD repository. </p>
 
-		<p>You can test whether the plugin works at these test URLs:</p>
+			<p>The plugin outputs a JSON representation of pairs of PubMed identifiers (in LLD) and frequency.</p>
+
+			<ul>
+			<li>Only works for Turtle serializations containing a <em>single</em> patient</li>
+			<li>Only works if these diagnoses are expressed using URIs <a href="http://linkedlifedata.com">Linked Life Data</a> or <a href="http://aers.data2semantics.org">AERS-LD</a> repositories.</li>
+			</ul>
+
+			<a class="btn btn-primary btn-large" data-toggle="modal" href="#publicationsUsageModal">Usage</a>
+		</div>
+		
+		<div class="modal hide fade" id="publicationsUsageModal">
+			<div class="modal-header">
+			    <a class="close" data-dismiss="modal">×</a>
+			    <h3>Usage</h3>
+			  </div>
+			<div class="modal-body">
+				<ul>
+				<li>Create a patient record according to the <a href="https://github.com/Data2Semantics/raw2ld/blob/master/vocab/patient_vocab.owl">Patient Ontology</a> vocabulary, using the UMLS identifiers specified by <a href="http://linkedlifedata.com">Linked Life Data</a> or any other identifier available in <a href="http://aers.data2semantics.org">AERS-LD</a>. A couple of tips:
+
+				<ul>
+				<li>Make sure there is only one instance of <code>po:Patient</code> in the turtle serialization</li>
+				</ul>
+				</li>
+				<li>Append a URL encoded Turtle serialisation of your patient record to the <a href="http://YOURHOSTHERE/mascc/">http://YOURHOSTHERE/mascc/</a> URL.</li>
+				<li>Perform an HTTP GET to that URL (i.e. copy paste it to your browser's address bar)</li>
+				<li>The service will return JSON list of pairs of PubMed identifiers (in LLD) and frequency./li>
+				</ul>
+			</div>
+			<div class="modal-footer">
+				<a href="#" class="btn" data-dismiss="modal" >Close</a>
+			</div>
+		</div>
+		
+		<div class="alert info">
+		<p>Simple examples:</p>
 
 		<ul>
 		<li>
@@ -265,6 +301,7 @@
 		<a href="http://semweb.cs.vu.nl/plugins/test/publications/no_neutropenia">http://semweb.cs.vu.nl/plugins/test/publications/no_neutropenia</a><br>
 		Returns the top 50 relevant publications related to John Doe (without FN)</li>
 		</ul>
+		</div>
 	</div>
 </div>
 
