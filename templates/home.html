@@ -12,11 +12,56 @@
 </div>
 <div class="row">
 	<div class="span6">
-		<h3>MASCC Index plugin</h3>
+		<h1>MASCC Index plugin</h1>
 
-		<p>This plugin takes a Turtle representation of a patient (expressed using the <a href="https://github.com/Data2Semantics/raw2ld/blob/master/vocab/patient_vocab.owl">Patient Ontology</a>), and interprets the values for the <code>po:hasIndication</code>, <code>po:hadPreviousIndication</code>, <code>po:burdenOfIllness</code> and <code>po:patientStatus</code> properties to determine the <strong>MASCC</strong> index for that patient. </p>
+		<p>The <strong>MASCC</strong> index of the <a href="http://www.mascc.org">Multinational Association for Supportive Care in Cancer</a> gives an estimation whether a patient is a <code>po:highRisk</code> patient or not, in the case of <a href="http://aers.data2semantics.org/resource/indication/FEBRILE_NEUTROPENIA">Febrile Neutropenia</a>. We take the MASCC score as defined in "<a href="http://dx.doi.org/doi:10.1093/annonc/mdp163">Management of febrile neutropenia: ESMO Clinical Recommendations</a>".</p>
 
-		<p>The <strong>MASCC</strong> index gives an estimation whether the patient is a <code>po:highRisk</code> patient or not, in the case of <a href="http://aers.data2semantics.org/resource/indication/FEBRILE_NEUTROPENIA">Febrile Neutropenia</a>. We take the MASCC score as defined in "<a href="http://dx.doi.org/doi:10.1093/annonc/mdp163">Management of febrile neutropenia: ESMO Clinical Recommendations</a>".</p>
+		<p><strong>Table</strong>: <em>MASCC Scoring Index</em></p>
+
+		<table>
+		<tr>
+		<td>Characteristic</td>
+		<td>Score</td>
+		</tr>
+		<tr>
+		<td>Burden of illness: no or mild symptoms</td>
+		<td>5</td>
+		</tr>
+		<tr>
+		<td>No hypotension</td>
+		<td>5</td>
+		</tr>
+		<tr>
+		<td>No chronic obstructive pulmonary disease</td>
+		<td>4</td>
+		</tr>
+		<tr>
+		<td>Solid tumor or no previous fungal infection</td>
+		<td>4</td>
+		</tr>
+		<tr>
+		<td>No dehydration</td>
+		<td>3</td>
+		</tr>
+		<tr>
+		<td>Burden of illness: moderate symptoms</td>
+		<td>3</td>
+		</tr>
+		<tr>
+		<td>Outpatient status (at onset of fever)</td>
+		<td>3</td>
+		</tr>
+		<tr>
+		<td>Age &lt;20 years</td>
+		<td>2</td>
+		</tr>
+		<tr>
+		<td><em>Scores &gt;21 are at low risk of complications</em></td>
+		<td></td>
+		</tr>
+		</table><h2>What it does</h2>
+
+		<p>This plugin takes a <a href="http://www.w3.org/TR/turtle/">Turtle</a> representation of a patient (expressed using the D2S <a href="https://github.com/Data2Semantics/raw2ld/blob/master/vocab/patient_vocab.owl">Patient Ontology</a>), and interprets the values for the <code>po:hasIndication</code>, <code>po:hadPreviousIndication</code>, <code>po:burdenOfIllness</code> and <code>po:patientStatus</code> properties to determine the <strong>MASCC</strong> index for that patient. </p>
 
 		<p>The plugin outputs an "enriched" version of the patient record, including the MASCC score, the inference that the patient has Febrile Neutropenia, and a conclusion as to whether the patient is <code>po:highRisk</code> or not. </p>
 
@@ -25,10 +70,8 @@
 		<li>Only works for patients that are both Febrile and have Neutropenia</li>
 		<li>Only works if these diagnoses are expressed using UMLS codes from the <a href="http://linkedlifedata.com">Linked Life Data</a> repository.</li>
 		</ul>
-		
-		<p><strong>NB:</strong> This is all still <strong>very hacky</strong>!!</p>
 
-		<h4>Usage</h4>
+		<h2>Usage</h2>
 
 		<ul>
 		<li>Create a patient record according to the <a href="https://github.com/Data2Semantics/raw2ld/blob/master/vocab/patient_vocab.owl">Patient Ontology</a> vocabulary, using the UMLS identifiers specified by <a href="http://linkedlifedata.com">Linked Life Data</a>. A couple of tips:
@@ -45,7 +88,7 @@
 		<li>The service will return an enriched version of the patient record</li>
 		</ul>
 		
-		<h4>Example</h4>
+		<h2>Example</h2>
 
 		<p>This is a patient called "John Doe". The patient has a number of "indications" (diagnoses), most notably <code>umls:C0027947</code> (Neutropenia), and a measurement <code>umls:C0015967</code> (Fever):</p>
 
@@ -146,7 +189,7 @@ Score: 15"""^^xsd:string,
 		<li>There's also a <code>rdfs:comment</code> explaining what contributed to the score.</li>
 		</ul>
 		
-		<h4>Testing</h4>
+		<h2>Testing</h2>
 
 		<p>You can test whether the plugin works at these test URLs:</p>
 
@@ -161,7 +204,7 @@ Score: 15"""^^xsd:string,
 		</ul>
 	</div>
 	<div class="span6">
-		<h3>Publications plugin</h3>
+		<h1>Publications plugin</h1>
 
 		<p>This plugin takes a Turtle representation of a patient (expressed using the <a href="https://github.com/Data2Semantics/raw2ld/blob/master/vocab/patient_vocab.owl">Patient Ontology</a>) and uses the values for the <code>po:hasIndication</code>, <code>po:hasMeasurement</code>, <code>po:usesMedication</code>, <code>po:hadPreviousIndication</code> and <code>po:hadRecentTreatment</code> properties to find related publications as listed in the <a href="http://linkedlifedata.com">Linked Life Data</a> (LLD) repository.</p>
 
@@ -171,7 +214,11 @@ Score: 15"""^^xsd:string,
 
 		<ul>
 		<li>Only works for Turtle serializations containing a <em>single</em> patient</li>
-		</ul><h4>Testing</h4>
+		</ul>
+		<h2>Usage</h2>
+
+		<p>See the MASCC Index plugin for a description &amp; example of how to use this plugin. Simply replace <code>mascc</code> in all URIs with <code>plugins</code>. </p>
+		<h2>Testing</h2>
 
 		<p>You can test whether the plugin works at these test URLs:</p>
 
