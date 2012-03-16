@@ -16,6 +16,22 @@
 
 		<p>The <strong>MASCC</strong> index of the <a href="http://www.mascc.org">Multinational Association for Supportive Care in Cancer</a> gives an estimation whether a patient is a <code>po:highRisk</code> patient or not, in the case of <a href="http://aers.data2semantics.org/resource/indication/FEBRILE_NEUTROPENIA">Febrile Neutropenia</a>. We take the MASCC score as defined in "<a href="http://dx.doi.org/doi:10.1093/annonc/mdp163">Management of febrile neutropenia: ESMO Clinical Recommendations</a>".</p>
 
+
+		
+		<div class="well">
+		<h2>What it does</h2>
+
+		<p>This plugin takes a <a href="http://www.w3.org/TR/turtle/">Turtle</a> representation of a patient (expressed using the D2S <a href="https://github.com/Data2Semantics/raw2ld/blob/master/vocab/patient_vocab.owl">Patient Ontology</a>), and interprets the values for the <code>po:hasIndication</code>, <code>po:hadPreviousIndication</code>, <code>po:burdenOfIllness</code> and <code>po:patientStatus</code> properties to determine the <strong>MASCC</strong> index for that patient. </p>
+
+		<p>The plugin outputs an "enriched" version of the patient record, including the MASCC score, the inference that the patient has Febrile Neutropenia, and a conclusion as to whether the patient is <code>po:highRisk</code> or not. </p>
+
+		<ul>
+		<li>Only works for Turtle serializations containing a <em>single</em> patient</li>
+		<li>Only works for patients that are both Febrile and have Neutropenia</li>
+		<li>Only works if these diagnoses are expressed using UMLS codes from the <a href="http://linkedlifedata.com">Linked Life Data</a> repository.</li>
+		</ul>
+		</div>
+		
 		<p><strong>Table</strong>: <em>MASCC Scoring Index</em></p>
 
 		<table class="table table-striped">
@@ -61,22 +77,8 @@
 		</tr>
 		</table>
 		
-		<div class="well">
-		<h2>What it does</h2>
-
-		<p>This plugin takes a <a href="http://www.w3.org/TR/turtle/">Turtle</a> representation of a patient (expressed using the D2S <a href="https://github.com/Data2Semantics/raw2ld/blob/master/vocab/patient_vocab.owl">Patient Ontology</a>), and interprets the values for the <code>po:hasIndication</code>, <code>po:hadPreviousIndication</code>, <code>po:burdenOfIllness</code> and <code>po:patientStatus</code> properties to determine the <strong>MASCC</strong> index for that patient. </p>
-
-		<p>The plugin outputs an "enriched" version of the patient record, including the MASCC score, the inference that the patient has Febrile Neutropenia, and a conclusion as to whether the patient is <code>po:highRisk</code> or not. </p>
-
-		<ul>
-		<li>Only works for Turtle serializations containing a <em>single</em> patient</li>
-		<li>Only works for patients that are both Febrile and have Neutropenia</li>
-		<li>Only works if these diagnoses are expressed using UMLS codes from the <a href="http://linkedlifedata.com">Linked Life Data</a> repository.</li>
-		</ul>
-		</div>
-		
 		<a class="btn btn-primary btn-large" data-toggle="modal" href="#masccUsageModal">Usage</a>
-		<a class="btn btn-primary btn-large" data-toggle="modal" href="#masccExampleModal">Usage</a>
+		<a class="btn btn-primary btn-large" data-toggle="modal" href="#masccExampleModal">Example</a>
 		
 		<div class="modal hide fade" id="masccUsageModal">
 			<div class="modal-header">
@@ -220,9 +222,7 @@
 		<h2>Example</h2>
 
 		
-		
-		<h2>Testing</h2>
-
+		<div class="alert info">
 		<p>You can test whether the plugin works at these test URLs:</p>
 
 		<ul>
@@ -234,6 +234,7 @@
 		<li>
 		<a href="http://semweb.cs.vu.nl/plugins/test/mascc/no_neutropenia">http://semweb.cs.vu.nl/plugins/test/mascc/no_neutropenia</a><br><strong>ERROR</strong>: the patient does not have Febrile Neutropenia</li>
 		</ul>
+		</div>
 	</div>
 	<div class="span6">
 		<h1>Publications plugin</h1>
