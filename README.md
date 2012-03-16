@@ -1,14 +1,44 @@
 # Plugins for Hubble
 
-This repository contains the code for several plugins for Hubble. These plugins are based on the Python [Django](http://django.org) framework.
+This repository contains the code for several plugins for Hubble, the Clinical Decision Support system developed in the [Data2Semantics](http://www.data2semantics.org) project. These plugins are based on the [Python](http://www.python.org) [Django](http://django.org) framework.
 
-## Plugins
+### Requirements
 
-### MASCC Index plugin
+* [Python 2.7](http://www.python.org)
+* [Pygments](http://pygments.org) for syntax highlighting
+* [N3Pygments](https://github.com/gniezen/n3pygments) lexer for Pygments
+* [RDFLib](http://rdflib.net) library for parsing RDF
+* [SPARQLWrapper](http://sparql-wrapper.sourceforge.net/) library for querying SPARQL endpoints
 
-This plugin takes a Turtle representation of a patient (expressed using the [Patient Ontology](https://github.com/Data2Semantics/raw2ld/blob/master/vocab/patient_vocab.owl)), and interprets the values for the `po:hasIndication`, `po:hadPreviousIndication`, `po:burdenOfIllness` and `po:patientStatus` properties to determine the **MASCC** index for that patient. 
+**NB:** This is all still **very preliminary work**!!
 
-The **MASCC** index gives an estimation whether the patient is a `po:highRisk` patient or not, in the case of [Febrile Neutropenia](http://aers.data2semantics.org/resource/indication/FEBRILE_NEUTROPENIA). We take the MASCC score as defined in "[Management of febrile neutropenia: ESMO Clinical Recommendations](http://dx.doi.org/doi:10.1093/annonc/mdp163)".
+The plugins make a number of (rather silly) assumptions, one of which is that:
+
+* The AERS-LD dataset is hosted behind a SPARQL endpoint at <http://eculture2.cs.vu.nl/sparql/>
+
+# MASCC Index plugin
+
+The **MASCC** index of the [Multinational Association for Supportive Care in Cancer](http://www.mascc.org) gives an estimation whether a patient is a `po:highRisk` patient or not, in the case of [Febrile Neutropenia](http://aers.data2semantics.org/resource/indication/FEBRILE_NEUTROPENIA). We take the MASCC score as defined in "[Management of febrile neutropenia: ESMO Clinical Recommendations](http://dx.doi.org/doi:10.1093/annonc/mdp163)".
+
+**Table**: *MASCC Scoring Index*
+
+Characteristic | Score 
+-------------- | ------
+Burden of illness: no or mild symptoms	| 5
+No hypotension							| 5
+No chronic obstructive pulmonary disease | 4 
+Solid tumor or no previous fungal infection | 4
+No dehydration							| 3
+Burden of illness: moderate symptoms	| 3
+Outpatient status (at onset of fever)	| 3
+Age <20 years								| 2
+*Scores >21 are at low risk of complications* | 
+
+
+
+## What it does
+
+This plugin takes a [Turtle](http://www.w3.org/TR/turtle/) representation of a patient (expressed using the D2S [Patient Ontology](https://github.com/Data2Semantics/raw2ld/blob/master/vocab/patient_vocab.owl)), and interprets the values for the `po:hasIndication`, `po:hadPreviousIndication`, `po:burdenOfIllness` and `po:patientStatus` properties to determine the **MASCC** index for that patient. 
 
 The plugin outputs an "enriched" version of the patient record, including the MASCC score, the inference that the patient has Febrile Neutropenia, and a conclusion as to whether the patient is `po:highRisk` or not. 
 
@@ -16,20 +46,17 @@ The plugin outputs an "enriched" version of the patient record, including the MA
 * Only works for patients that are both Febrile and have Neutropenia
 * Only works if these diagnoses are expressed using UMLS codes from the [Linked Life Data](http://linkedlifedata.com) repository.
 
-**NB:** This is all still **very hacky**!!
-
-
-#### Usage
+## Usage
 
 * Create a patient record according to the [Patient Ontology](https://github.com/Data2Semantics/raw2ld/blob/master/vocab/patient_vocab.owl) vocabulary, using the UMLS identifiers specified by [Linked Life Data](http://linkedlifedata.com). A couple of tips:
 	* Make sure there is only one instance of `po:Patient` in the turtle serialization
 	* Make sure the patient has at least the value `umls:C0027947` (Neutropenia) for a `po:hasIndication` property.  
 	* Make sure the patient has at least the value `umls:C0015967` (Fever) for a `po:hasMeasurement` property. 
-* Append a URL encoded Turtle serialisation of your patient record to the <http://YOURHOSTHERE/mascc/> URL.
+* Append a URL encoded Turtle serialisation of your patient record to the <http://YOURHOSTHERE/plugins/mascc/> URL.
 * Perform an HTTP GET to that URL (i.e. copy paste it to your browser's address bar)
 * The service will return an enriched version of the patient record
 
-#### Example
+## Example
 
 This is a patient called "John Doe". The patient has a number of "indications" (diagnoses), most notably `umls:C0027947` (Neutropenia), and a measurement `umls:C0015967` (Fever):
 
@@ -123,19 +150,19 @@ What has changed?
 * There's also a `rdfs:comment` explaining what contributed to the score.
 
 
-#### Testing
+## Testing
 
 You can test whether the plugin works at these test URLs:
 
-* <http://YOURHOSTHERE/test/mascc/john_doe>  
+* <http://YOURHOSTHERE/plugins/test/mascc/john_doe>  
 	computes the score for John Doe
-* <http://YOURHOSTHERE/test/mascc/two_patients>  
+* <http://YOURHOSTHERE/plugins/test/mascc/two_patients>  
 	**ERROR**: expects only a single patient
-* <http://YOURHOSTHERE/test/mascc/no_neutropenia>  
+* <http://YOURHOSTHERE/plugins/test/mascc/no_neutropenia>  
 	**ERROR**: the patient does not have Febrile Neutropenia
 
 
-### Publications plugin
+# Publications plugin
 
 This plugin takes a Turtle representation of a patient (expressed using the [Patient Ontology](https://github.com/Data2Semantics/raw2ld/blob/master/vocab/patient_vocab.owl)) and uses the values for the `po:hasIndication`, `po:hasMeasurement`, `po:usesMedication`, `po:hadPreviousIndication` and `po:hadRecentTreatment` properties to find related publications as listed in the [Linked Life Data](http://linkedlifedata.com) (LLD) repository.
 
@@ -145,33 +172,28 @@ The plugin orders the results by frequency, and returns a JSON representation of
 
 * Only works for Turtle serializations containing a *single* patient
 
-#### Testing
+## Usage
+
+See the MASCC Index plugin for a description & example of how to use this plugin. Simply replace `mascc` in all URIs with `plugins`. 
+
+
+##Testing
 
 You can test whether the plugin works at these test URLs:
 
-* <http://YOURHOSTHERE/test/publications/john_doe>  
+* <http://YOURHOSTHERE/plugins/test/publications/john_doe>  
 	Returns the top 50 relevant publications related to John Doe
-* <http://YOURHOSTHERE/test/publications/two_patients>  
+* <http://YOURHOSTHERE/plugins/test/publications/two_patients>  
 	**ERROR**: expects only a single patient
-* <http://YOURHOSTHERE/test/publications/no_neutropenia>  
+* <http://YOURHOSTHERE/plugins/test/publications/no_neutropenia>  
 	Returns the top 50 relevant publications related to John Doe (without FN)
 
-#### Usage
+## Usage
 
 * Create a patient record according to the [Patient Ontology](https://github.com/Data2Semantics/raw2ld/blob/master/vocab/patient_vocab.owl) vocabulary, using the UMLS identifiers specified by [Linked Life Data](http://linkedlifedata.com).
-* Append a URL encoded Turtle serialisation of your patient record to the <http://YOURHOSTHERE/publications/> URL.
+* Append a URL encoded Turtle serialisation of your patient record to the <http://YOURHOSTHERE/plugins/publications/> URL.
 * Perform an HTTP GET to that URL (i.e. copy paste it to your browser's address bar)
 * The service will return a list of publications related to the patient
 
-## Requirements
 
-* Python 2.7
-* [Pygments](http://pygments.org) for syntax highlighting
-* [N3Pygments](https://github.com/gniezen/n3pygments) lexer for Pygments
-* [RDFLib](http://rdflib.net) library for parsing RDF
-* [SPARQLWrapper](http://sparql-wrapper.sourceforge.net/) library for querying SPARQL endpoints
-
-The plugins make a number of (rather silly) assumptions:
-
-1. The AERS-LD dataset is hosted behind a SPARQL endpoint at <http://eculture2.cs.vu.nl/sparql/>
 
