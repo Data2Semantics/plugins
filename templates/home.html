@@ -21,7 +21,7 @@
 		<div class="well">
 		<h2>What it does</h2>
 
-		<p>This plugin takes a <a href="http://www.w3.org/TR/turtle/">Turtle</a> representation of a patient (expressed using the D2S <a href="https://github.com/Data2Semantics/raw2ld/blob/master/vocab/patient_vocab.owl">Patient Ontology</a>), and interprets the values for the <code>po:hasIndication</code>, <code>po:hadPreviousIndication</code>, <code>po:burdenOfIllness</code> and <code>po:patientStatus</code> properties to determine the <strong>MASCC</strong> index for that patient. </p>
+		<p>This plugin takes a <a href="http://www.w3.org/TR/turtle/">Turtle</a> representation of a patient (expressed using the D2S <a href="https://github.com/Data2Semantics/raw2ld/blob/master/vocab/patient_vocab.owl">Patient Ontology</a>), and interprets the values for the <code>po:hasDiagnosis</code>, <code>po:hadPreviousIndication</code>, <code>po:burdenOfIllness</code> and <code>po:patientStatus</code> properties to determine the <strong>MASCC</strong> index for that patient. </p>
 
 		<p>The plugin outputs an "enriched" version of the patient record, including the MASCC score, the inference that the patient has Febrile Neutropenia, and a conclusion as to whether the patient is <code>po:highRisk</code> or not. </p>
 
@@ -46,7 +46,7 @@
 
 				<ul>
 				<li>Make sure there is only one instance of <code>po:Patient</code> in the turtle serialization</li>
-				<li>Make sure the patient has at least the value <code>umls:C0027947</code> (Neutropenia) for a <code>po:hasIndication</code> property.<br>
+				<li>Make sure the patient has at least the value <code>umls:C0027947</code> (Neutropenia) for a <code>po:hasDiagnosis</code> property.<br>
 				</li>
 				<li>Make sure the patient has at least the value <code>umls:C0015967</code> (Fever) for a <code>po:hasMeasurement</code> property. </li>
 				</ul>
@@ -81,23 +81,20 @@
         owl:NamedIndividual;
     rdfs:label "john_doe"@en;
     po:burdenOfIllness po:Severe;
-    po:complicationRisk po:highRisk;
     po:hadPreviousIndication umls:C0026946;
     po:hadRecentTreatment umls:C0559692;
     po:hasAge 67;
-    po:hasIndication indication:DIARRHOEA,
+    po:hasDiagnosis indication:DIARRHOEA,
         indication:VOMITING,
         umls:C0024117,
         umls:C0027947,
         umls:C0280100,
         umls:C0376545,
-        umls:C0746883,
         indication:CLOSTRIDIUM_COLITIS,
         indication:LEUKAEMIA_RECURRENT;
     po:hasMeasurement umls:C0015967,
         umls:C0277884;
     po:hasStatus po:outpatient;
-    po:masccIndex "15"^^xsd:int;
     po:usesMedication drug:AMBISOME,
         drug:CEFPROZIL,
         drug:CETIRIZINE_HYDROCHLORIDE,
@@ -106,7 +103,7 @@
     rdfs:comment "over 60, matches all other criteria" .
 		</code></pre>
 
-				<p>Using the demo MASCC service at <a href="http://www.data2semantics.org/plugins/mascc">http://www.data2semantics.org/plugins/mascc</a>, we can now compute the MASCC score for John Doe, by following <a href="http://www.data2semantics.org/plugins/mascc/%40prefix%20ns1%3A%20%3Chttp%3A%2F%2Fwww.data2semantics.org%2Fontology%2Fpatient%2F%3E%20.%0A%40prefix%20owl%3A%20%3Chttp%3A%2F%2Fwww.w3.org%2F2002%2F07%2Fowl%23%3E%20.%0A%40prefix%20rdfs%3A%20%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%20.%0A%40prefix%20xsd%3A%20%3Chttp%3A%2F%2Fwww.w3.org%2F2001%2FXMLSchema%23%3E%20.%0A%0A%3Chttp%3A%2F%2Fwww.data2semantics.org%2Fpatient-example.owl%2Fjohn_doe%3E%20a%20ns1%3APatient%2C%0A%20%20%20%20%20%20%20%20owl%3ANamedIndividual%3B%0A%20%20%20%20rdfs%3Alabel%20%22john_doe%22%40en%3B%0A%20%20%20%20ns1%3AburdenOfIllness%20ns1%3ASevere%3B%0A%20%20%20%20ns1%3AhadPreviousIndication%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0026946%3E%3B%0A%20%20%20%20ns1%3AhadRecentTreatment%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fid%2Fumls%2FC0559692%3E%3B%0A%20%20%20%20ns1%3AhasAge%2067%3B%0A%20%20%20%20ns1%3AhasIndication%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Findication%2FDIARRHOEA%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Findication%2FVOMITING%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0024117%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0027947%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0280100%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0376545%3E%3B%0A%20%20%20%20ns1%3AhasMeasurement%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0015967%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0277884%3E%3B%0A%20%20%20%20ns1%3AhasStatus%20ns1%3Aoutpatient%3B%0A%20%20%20%20ns1%3AusesMedication%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Fdrug%2FAMBISOME%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Fdrug%2FCEFPROZIL%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Fdrug%2FCETIRIZINE_HYDROCHLORIDE%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Fdrug%2FFORADIL%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Fdrug%2FMERCAPTOPURINE%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Findication%2FCLOSTRIDIUM_COLITIS%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Findication%2FLEUKAEMIA_RECURRENT%3E%3B%0A%20%20%20%20rdfs%3Acomment%20%22over%2060%2C%20matches%20all%20other%20criteria%22%20.%0A%0A">this link</a> (view the source of this page to see the actual URL… it's ugly!)</p>
+				<p>Using the demo MASCC service at <a href="http://www.data2semantics.org/plugins/mascc">http://www.data2semantics.org/plugins/mascc</a>, we can now compute the MASCC score for John Doe, by following <a href="http://www.data2semantics.org/plugins/mascc/%40prefix%20ns1%3A%20%3Chttp%3A%2F%2Fwww.data2semantics.org%2Fontology%2Fpatient%2F%3E%20.%0A%40prefix%20owl%3A%20%3Chttp%3A%2F%2Fwww.w3.org%2F2002%2F07%2Fowl%23%3E%20.%0A%40prefix%20rdfs%3A%20%3Chttp%3A%2F%2Fwww.w3.org%2F2000%2F01%2Frdf-schema%23%3E%20.%0A%40prefix%20xsd%3A%20%3Chttp%3A%2F%2Fwww.w3.org%2F2001%2FXMLSchema%23%3E%20.%0A%0A%3Chttp%3A%2F%2Fwww.data2semantics.org%2Fpatient-example.owl%2Fjohn_doe%3E%20a%20ns1%3APatient%2C%0A%20%20%20%20%20%20%20%20owl%3ANamedIndividual%3B%0A%20%20%20%20rdfs%3Alabel%20%22john_doe%22%40en%3B%0A%20%20%20%20ns1%3AburdenOfIllness%20ns1%3ASevere%3B%0A%20%20%20%20ns1%3AhadPreviousIndication%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0026946%3E%3B%0A%20%20%20%20ns1%3AhadRecentTreatment%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fid%2Fumls%2FC0559692%3E%3B%0A%20%20%20%20ns1%3AhasAge%2067%3B%0A%20%20%20%20ns1%3AhasDiagnosis%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Findication%2FDIARRHOEA%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Findication%2FVOMITING%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0024117%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0027947%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0280100%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0376545%3E%3B%0A%20%20%20%20ns1%3AhasMeasurement%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0015967%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Flinkedlifedata.com%2Fresource%2Fumls%2Fid%2FC0277884%3E%3B%0A%20%20%20%20ns1%3AhasStatus%20ns1%3Aoutpatient%3B%0A%20%20%20%20ns1%3AusesMedication%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Fdrug%2FAMBISOME%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Fdrug%2FCEFPROZIL%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Fdrug%2FCETIRIZINE_HYDROCHLORIDE%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Fdrug%2FFORADIL%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Fdrug%2FMERCAPTOPURINE%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Findication%2FCLOSTRIDIUM_COLITIS%3E%2C%0A%20%20%20%20%20%20%20%20%3Chttp%3A%2F%2Faers.data2semantics.org%2Fresource%2Findication%2FLEUKAEMIA_RECURRENT%3E%3B%0A%20%20%20%20rdfs%3Acomment%20%22over%2060%2C%20matches%20all%20other%20criteria%22%20.%0A%0A">this link</a> (view the source of this page to see the actual URL… it's ugly!)</p>
 
 				<p>The service will respond with:</p>
 
@@ -127,7 +124,7 @@
     po:hadPreviousIndication umls:C0026946;
     po:hadRecentTreatment &lt;http://linkedlifedata.com/resource/id/umls/C0559692&gt;;
     po:hasAge 67;
-    po:hasIndication indication:DIARRHOEA,
+    po:hasDiagnosis indication:DIARRHOEA,
         indication:VOMITING,
         umls:C0024117,
         umls:C0027947,
@@ -157,7 +154,7 @@ Score: 15"""^^xsd:string,
 				<p>What has changed? </p>
 
 				<ul>
-				<li>John Doe now has an additional <code>po:hasIndication</code> for <code>umls:C0746883</code> (Febrile Neutropenia)<br>
+				<li>John Doe now has an additional <code>po:hasDiagnosis</code> for <code>umls:C0746883</code> (Febrile Neutropenia)<br>
 				</li>
 				<li>His MASCC index (<code>po:masccIndex</code>) is <em>"15"</em>
 				</li>
@@ -239,7 +236,7 @@ Score: 15"""^^xsd:string,
 	<div class="span6">
 		<h1>Publications plugin</h1>
 
-		<p>This plugin takes a Turtle representation of a patient (expressed using the <a href="https://github.com/Data2Semantics/raw2ld/blob/master/vocab/patient_vocab.owl">Patient Ontology</a>) and uses the values for the <code>po:hasIndication</code>, <code>po:hasMeasurement</code>, <code>po:usesMedication</code>, <code>po:hadPreviousIndication</code> and <code>po:hadRecentTreatment</code> properties to find related publications as listed in the <a href="http://linkedlifedata.com">Linked Life Data</a> (LLD) repository.</p>
+		<p>This plugin takes a Turtle representation of a patient (expressed using the <a href="https://github.com/Data2Semantics/raw2ld/blob/master/vocab/patient_vocab.owl">Patient Ontology</a>) and uses the values for the <code>po:hasDiagnosis</code>, <code>po:hasMeasurement</code>, <code>po:usesMedication</code>, <code>po:hadPreviousIndication</code> and <code>po:hadRecentTreatment</code> properties to find related publications as listed in the <a href="http://linkedlifedata.com">Linked Life Data</a> (LLD) repository.</p>
 
 		<p>The plugin first calls the AERS-LD dataset to find the equivalent identifiers for these resources that LLD uses to connect to publications (<a href="http://www.ncbi.nlm.nih.gov/pubmed/">PubMed</a> identifiers). </p>
 

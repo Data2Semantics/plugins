@@ -18,15 +18,15 @@
                                                                                                                              <http://aers.data2semantics.org/resource/drug/FORADIL> ,
                                                                                                                              <http://aers.data2semantics.org/resource/drug/MERCAPTOPURINE> ,
                                                                                                                              <http://aers.data2semantics.org/resource/indication/CLOSTRIDIUM_COLITIS> ;
-                                                             <http://www.data2semantics.org/ontology/patient/hasIndication> <http://aers.data2semantics.org/resource/indication/DIARRHOEA> ;
+                                                             <http://www.data2semantics.org/ontology/patient/hasDiagnosis> <http://aers.data2semantics.org/resource/indication/DIARRHOEA> ;
                                                              <http://www.data2semantics.org/ontology/patient/usesMedication> <http://aers.data2semantics.org/resource/indication/LEUKAEMIA_RECURRENT> ;
-                                                             <http://www.data2semantics.org/ontology/patient/hasIndication> <http://aers.data2semantics.org/resource/indication/VOMITING> ;
-                                                             <http://www.data2semantics.org/ontology/patient/hadRecentTreatment> <http://linkedlifedata.com/resource/id/umls/C0559692> ;
+                                                             <http://www.data2semantics.org/ontology/patient/hasDiagnosis> <http://aers.data2semantics.org/resource/indication/VOMITING> ;
+                                                             <http://www.data2semantics.org/ontology/patient/hadRecentTreatment> <http://linkedlifedata.com/resource/umls/id/C0559692> ;
                                                              <http://www.data2semantics.org/ontology/patient/hasMeasurement> <http://linkedlifedata.com/resource/umls/id/C0015967> ;
-                                                             <http://www.data2semantics.org/ontology/patient/hasIndication> <http://linkedlifedata.com/resource/umls/id/C0024117> ;
+                                                             <http://www.data2semantics.org/ontology/patient/hasDiagnosis> <http://linkedlifedata.com/resource/umls/id/C0024117> ;
                                                              <http://www.data2semantics.org/ontology/patient/hadPreviousIndication> <http://linkedlifedata.com/resource/umls/id/C0026946> ;
                                                              <http://www.data2semantics.org/ontology/patient/hasMeasurement> <http://linkedlifedata.com/resource/umls/id/C0277884> ;
-                                                             <http://www.data2semantics.org/ontology/patient/hasIndication> <http://linkedlifedata.com/resource/umls/id/C0280100> ,
+                                                             <http://www.data2semantics.org/ontology/patient/hasDiagnosis> <http://linkedlifedata.com/resource/umls/id/C0280100> ,
                                                                                                                             <http://linkedlifedata.com/resource/umls/id/C0376545> ;
                                                              <http://www.data2semantics.org/ontology/patient/hasStatus> <http://www.data2semantics.org/ontology/patient/outpatient> .
 

@@ -1,32 +1,36 @@
-@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix drug: <http://aers.data2semantics.org/resource/drug/> .
+@prefix diagnosis: <http://aers.data2semantics.org/resource/diagnosis/> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
-@prefix : <http://www.data2semantics.org/patient-example.owl#> .
-@prefix xml: <http://www.w3.org/XML/1998/namespace> .
-@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix po: <http://www.data2semantics.org/ontology/patient/> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
-@base <http://www.data2semantics.org/patient-example.owl> .
+@prefix umls: <http://linkedlifedata.com/resource/umls/id/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 
-<http://www.data2semantics.org/patient-example.owl/john_doe> rdf:type <http://www.data2semantics.org/ontology/patient/Patient> , owl:NamedIndividual ;
-                                                             rdfs:label "john_doe"@en ;
-                                                             <http://www.data2semantics.org/ontology/patient/hasAge> 67 ;
-                                                             rdfs:comment "over 60, matches all other criteria" ;
-                                                             <http://www.data2semantics.org/ontology/patient/burdenOfIllness> <http://www.data2semantics.org/ontology/patient/Severe> ;
-                                                             <http://www.data2semantics.org/ontology/patient/usesMedication> <http://aers.data2semantics.org/resource/drug/AMBISOME> ,
-                                                                                                                             <http://aers.data2semantics.org/resource/drug/CEFPROZIL> ,
-                                                                                                                             <http://aers.data2semantics.org/resource/drug/CETIRIZINE_HYDROCHLORIDE> ,
-                                                                                                                             <http://aers.data2semantics.org/resource/drug/FORADIL> ,
-                                                                                                                             <http://aers.data2semantics.org/resource/drug/MERCAPTOPURINE> ,
-                                                                                                                             <http://aers.data2semantics.org/resource/indication/CLOSTRIDIUM_COLITIS> ;
-                                                             <http://www.data2semantics.org/ontology/patient/hasIndication> <http://aers.data2semantics.org/resource/indication/DIARRHOEA> ;
-                                                             <http://www.data2semantics.org/ontology/patient/usesMedication> <http://aers.data2semantics.org/resource/indication/LEUKAEMIA_RECURRENT> ;
-                                                             <http://www.data2semantics.org/ontology/patient/hasIndication> <http://aers.data2semantics.org/resource/indication/VOMITING> ;
-                                                             <http://www.data2semantics.org/ontology/patient/hadRecentTreatment> <http://linkedlifedata.com/resource/id/umls/C0559692> ;
-                                                             <http://www.data2semantics.org/ontology/patient/hasMeasurement> <http://linkedlifedata.com/resource/umls/id/C0015967> ;
-                                                             <http://www.data2semantics.org/ontology/patient/hasIndication> <http://linkedlifedata.com/resource/umls/id/C0024117> ;
-                                                             <http://www.data2semantics.org/ontology/patient/hadPreviousIndication> <http://linkedlifedata.com/resource/umls/id/C0026946> ;
-                                                             <http://www.data2semantics.org/ontology/patient/hasIndication> <http://linkedlifedata.com/resource/umls/id/C0027947> ;
-                                                             <http://www.data2semantics.org/ontology/patient/hasMeasurement> <http://linkedlifedata.com/resource/umls/id/C0277884> ;
-                                                             <http://www.data2semantics.org/ontology/patient/hasIndication> <http://linkedlifedata.com/resource/umls/id/C0280100> ,
-                                                                                                                            <http://linkedlifedata.com/resource/umls/id/C0376545> ;
-                                                             <http://www.data2semantics.org/ontology/patient/hasStatus> <http://www.data2semantics.org/ontology/patient/outpatient> .
+<http://www.data2semantics.org/patient-example.owl/john_doe> a po:Patient,
+        owl:NamedIndividual;
+    rdfs:label "John Doe"@en;
+    po:burdenOfIllness po:Severe;
+    po:complicationRisk po:highRisk;
+    po:hadPreviousIndication umls:C0026946;
+    po:hadRecentTreatment umls:C0559692;
+    po:hasAge 67;
+    po:hasDiagnosis diagnosis:DIARRHOEA,
+        diagnosis:VOMITING,
+        umls:C0024117,
+        umls:C0027947,
+        umls:C0280100,
+        umls:C0376545,
+        umls:C0746883,
+        diagnosis:CLOSTRIDIUM_COLITIS,
+        diagnosis:LEUKAEMIA_RECURRENT;
+    po:hasMeasurement umls:C0015967,
+        umls:C0277884;
+    po:hasStatus po:outpatient;
+    po:masccIndex "15"^^xsd:int;
+    po:usesMedication drug:AMBISOME,
+        drug:CEFPROZIL,
+        drug:CETIRIZINE_HYDROCHLORIDE,
+        drug:FORADIL,
+        drug:MERCAPTOPURINE;
+    rdfs:comment "over 60, matches all other criteria" .
 

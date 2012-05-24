@@ -37,11 +37,11 @@ def parse(request, graph):
         return multiple_patients_response(cg.serialize(format='turtle'))
     
     # If the patient does not have fever, nor neutropenia, return null
-    if not (cg.value(predicate=PO['hasIndication'],object=UMLS['C0027947']) and cg.value(predicate=PO['hasMeasurement'],object=UMLS['C0015967'])) :
+    if not (cg.value(predicate=PO['hasDiagnosis'],object=UMLS['C0027947']) and cg.value(predicate=PO['hasMeasurement'],object=UMLS['C0015967'])) :
         return not_febrile_neutropenia_response(cg.serialize(format='turtle'))
     else :
         # We now know the patient has Febrile Neutropenia
-        cg.add((patient,PO['hasIndication'],UMLS['C0746883']))
+        cg.add((patient,PO['hasDiagnosis'],UMLS['C0746883']))
     
     # Initialise the score to zero
     score = 0
@@ -52,21 +52,21 @@ def parse(request, graph):
         # Burden of illness: no or mild symptoms
         trace = trace + "No or mild symptoms\n"
         score += 5
-    if not cg.value(predicate=PO['hasIndication'],object=UMLS['C0020649']) :
+    if not cg.value(predicate=PO['hasDiagnosis'],object=UMLS['C0020649']) :
         # No hypotension
         trace = trace + "No hypotension\n"
         score += 5
-    if not cg.value(predicate=PO['hasIndication'],object=UMLS['C0024117']) :
+    if not cg.value(predicate=PO['hasDiagnosis'],object=UMLS['C0024117']) :
         # No COPD
         trace = trace + "No COPD\n"
         score += 4
-    if cg.value(predicate=PO['hasIndication'],object=UMLS['C0280100']) or not cg.value(predicate=PO['hadPreviousIndication'],object=UMLS['C0026946']) :
+    if cg.value(predicate=PO['hasDiagnosis'],object=UMLS['C0280100']) or not cg.value(predicate=PO['hadPreviousIndication'],object=UMLS['C0026946']) :
         # Adult: C0280099
         # Child: C0279068
         # Solid tumor or no previous fungal infection (Mycoses)
         trace = trace + "Solid tumor or no previous fungal infection\n"
         score += 4
-    if not cg.value(predicate=PO['hasIndication'],object=UMLS['C0011175']) :
+    if not cg.value(predicate=PO['hasDiagnosis'],object=UMLS['C0011175']) :
         # No dehydration
         trace = trace + "No dehydration\n"
         score += 3
